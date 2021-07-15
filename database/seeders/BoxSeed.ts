@@ -2,7 +2,7 @@ import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Box from 'App/Models/Box'
 
 export default class BoxSeedSeeder extends BaseSeeder {
-  public async run () {
+  public async run() {
     await Box.createMany(seedBoxes)
   }
 }
@@ -28,5 +28,19 @@ const seedBoxes = [
     location: 'Tribeca',
     available: true,
     capacity: 10,
+  },
+  {
+    id: 4,
+    name: 'Bora Bora Box',
+    location: 'Flatiron',
+    available: true,
+    capacity: 10,
+  },
+  {
+    id: 5,
+    name: 'Tahiti Box',
+    location: 'Flatiron',
+    available: true,
+    capacity: 20,
   },
 ]

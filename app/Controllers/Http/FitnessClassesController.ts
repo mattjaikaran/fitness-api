@@ -37,8 +37,8 @@ export default class FitnessClassesController {
     // Hand off to another instructor
     // Cancel if not enough people are confirmed for a class?
     // Notify students of class cancellation/Instructor change
-        // If canceled, students need to be given a credit
-        // If instructor changes, change the instructor name in the FitnessClass 
-        // give students an option to cancel.
+      // If canceled, students need to be given a credit
+      // If instructor changes, change the instructor name in the FitnessClass 
+      // give students an option to cancel.
   }
 }

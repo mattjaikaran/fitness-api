@@ -12,6 +12,10 @@ export default class AdminController {
   // Get Fitness Class by ID/Type/Instructor
   // Get an Instructor/Student/Admin User by ID
   // Get a Box by ID
+  // Create new Instructor/Student/Admin User
+  // Create new Location
+  // Create new Box
+  // Create new Fitness Class
   // Update Fitness Class
   // Update Box 
   // Update Student/Instructor/Admin User 
