@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import Box from './Box'
+import Location from './Location'
 
 export default class FitnessClass extends BaseModel {
   @column({ isPrimary: true })
@@ -9,19 +11,28 @@ export default class FitnessClass extends BaseModel {
   public name: string
 
   @column()
+  public type: string
+
+  @column()
   public instructor: string
 
-  @column.dateTime()
-  public classTime: DateTime
+  @column()
+  public location: Location | string
+
+  @column()
+  public box: Box | string
+
+  @column()
+  public classTime: DateTime | string
 
   @column()
   public length: number
 
   @column()
-  public equipmentProvided: string
+  public equipmentProvided: string | null
 
   @column()
-  public eqipmentRequired: string
+  public eqipmentRequired: string | null
 
   @column()
   public capacity: number

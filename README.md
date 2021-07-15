@@ -32,7 +32,7 @@ NodeJS API built with AdonisJS 5
 
 ## Installation
 
-This API requires [Node.js](https://nodejs.org/) v14.16.0 to run.
+This API requires [Node.js](https://nodejs.org/) v14.16.0+ to run.
 
 Install the dependencies and devDependencies and start the server.
 
@@ -61,3 +61,4 @@ Create a seeder:
 
 ```sh
 node ace make:seeder SEED_NAME
+```
