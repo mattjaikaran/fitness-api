@@ -1,5 +1,9 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+import Instructor from "App/Models/Instructor"
+import Student from "App/Models/Student"
+import User from "App/Models/User"
+
 export default class AuthController {
 
   public async login({ auth, request, response }) {
@@ -16,5 +20,22 @@ export default class AuthController {
   public async logout({ auth, response }) {
     await auth.use('web').logout()
     response.redirect('/login')
+  }
+
+  public async register({ auth, request, response }) {
+    // const student = new Student()
+    // const instructor = new Instructor()
+    // const user = new User()
+
+    // const email = request.input('email')
+    // const password = request.input('password')
+
+    try {
+      // pseudo code -> 
+      // await student.save() || instructor.save() || user.save()
+      // response.redirect('/dashboard')
+    } catch (err) {
+      return response.badRequest(err)
+    }
   }
 }

@@ -36,4 +36,7 @@
 
 
 export default class StudentBookingController {
+  public async index() {
+    return { message: 'Student Booking Controller Index' }
+  }
 }

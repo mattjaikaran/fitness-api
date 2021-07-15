@@ -27,22 +27,22 @@ export default class Instructor extends BaseModel {
   public phone: string
 
   @column()
-  public pastClasses: Array<FitnessClass>
+  public pastClasses: Array<FitnessClass> | null
 
   @column()
-  public credentials: string
+  public credentials: string | null
 
   @column()
-  public bio: string
+  public bio: string | null
 
   @column()
-  public instagram: string
+  public instagram: string | null
 
   @column()
-  public website: string
+  public website: string | null
 
   @column()
-  public photo: string
+  public photo: string | null
 
   @column()
   public rememberMeToken?: string

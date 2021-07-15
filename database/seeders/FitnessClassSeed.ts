@@ -10,7 +10,7 @@ export default class FitnessClassSeeder extends BaseSeeder {
 const seedClasses = [
   {
     id: 1,
-    type: 'Yoga',
+    fitnessClassType: 'Yoga',
     name: 'Yoga1',
     classTime: 'August 13, 2021, 1:30 PM EDT',
     instructor: 'Matias Jose',
@@ -22,7 +22,7 @@ const seedClasses = [
   },
   {
     id: 2,
-    type: 'Spin',
+    fitnessClassType: 'Spin',
     name: 'Spin2',
     classTime: 'August 13, 2021, 11:30 AM EDT',
     instructor: 'Jim Bob',
@@ -34,7 +34,7 @@ const seedClasses = [
   },
   {
     id: 3,
-    type: 'Yoga',
+    fitnessClassType: 'Yoga',
     name: 'Yoga2',
     classTime: 'August 13, 2021, 12:30 PM EDT',
     instructor: 'Matias Jose',
@@ -46,7 +46,7 @@ const seedClasses = [
   },
   {
     id: 4,
-    type: 'Spin',
+    fitnessClassType: 'Spin',
     name: 'Spin2',
     classTime: 'August 14, 2021, 08:30 AM EDT',
     instructor: 'Josh Bryant',
