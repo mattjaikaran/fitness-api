@@ -13,7 +13,7 @@ const seedStudents = [
     id: 1,
     firstName: 'Test',
     lastName: 'Student',
-    email: 'mattjaikaranweb@gmail.com',
+    email: 'teststudent@gmail.com',
     password: 'asdf1234',
     phone: '2125550198',
     pastClasses: [

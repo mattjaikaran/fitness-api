@@ -10,7 +10,7 @@ export default class Location extends BaseModel {
   public name: string
 
   @column()
-  public boxes: Array<Box>
+  public boxes: Array<Box> | Array<string>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

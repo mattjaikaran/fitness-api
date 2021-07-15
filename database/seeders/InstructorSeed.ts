@@ -13,7 +13,7 @@ const seedInstructors = [
     id: 1,
     firstName: 'Test',
     lastName: 'Instructor',
-    email: 'mjaikaran@kettlespace.com',
+    email: 'testinstructor@gmail.com',
     password: 'asdf1234!',
     phone: '9175550198',
     pastClasses: [
