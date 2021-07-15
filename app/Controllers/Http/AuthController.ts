@@ -6,22 +6,26 @@ import User from "App/Models/User"
 
 export default class AuthController {
 
+  // Login User (Student, Instructor, Admin)
   public async login({ auth, request, response }) {
-  const email = request.input('email')
-  const password = request.input('password')
+    const email = request.input('email')
+    const password = request.input('password')
 
-  try {
-    await auth.use('web').attempt(email, password)
-    response.redirect('/dashboard')
-  } catch {
-    return response.badRequest('Invalid credentials')
+    try {
+      await auth.use('web').attempt(email, password)
+      response.redirect('/dashboard')
+    } catch {
+      return response.badRequest('Invalid credentials')
+    }
   }
-}
+
+  // Logout User (Student, Instructor, Admin)
   public async logout({ auth, response }) {
     await auth.use('web').logout()
     response.redirect('/login')
   }
 
+  // Register User (Student, Instructor, Admin)
   public async register({ auth, request, response }) {
     // const student = new Student()
     // const instructor = new Instructor()
