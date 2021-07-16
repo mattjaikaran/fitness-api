@@ -1,5 +1,12 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+import Box from "App/Models/Box"
+import FitnessClass from "App/Models/FitnessClass"
+import Instructor from "App/Models/Instructor"
+import Location from "App/Models/Location"
+import Student from "App/Models/Student"
+import User from "App/Models/User"
+
 // here is where admin capabilities will go. 
 // CRUD users, etc
 export default class AdminController {
@@ -8,17 +15,35 @@ export default class AdminController {
   }
 
   // Get All Locations
-  public async getAllLocations() {}
+  public async getAllLocations() {
+    const locations = await Location.all()
+    return locations
+  }
   // Get All Boxes
-  public async getAllBoxes() {}
+  public async getAllBoxes() {
+    const boxes = await Box.all()
+    return boxes
+  }
   // Get All Fitness Classes
-  public async getAllFitnessClasses() {}
+  public async getAllFitnessClasses() {
+    const fitnessClass = await FitnessClass.all()
+    return fitnessClass
+  }
   // Get ALL Users (All Instructors, All Students, All Admin Users)
-  public async getAllUsers() {}
+  public async getAllUsers() {
+    // let allUsers
+    // const adminUsers = await User.all()
+    // const instructors = await Instructor.all()
+    // const students = await Student.all()
+    // allUsers = await adminUsers.concat(instructors, students)
+    // return allUsers
+  }
   // Get All Instructors
   public async getAllInstructors() {}
   // Get All Students
   public async getAllStudents() {}
+  // Get all Customers (Instructors and Students)
+  public async getAllCustomers() {}
   // Get All Admin Users
   public async getAllAdminUsers() {}
   // Get a Location by ID/Name
@@ -36,7 +61,7 @@ export default class AdminController {
   public async getFitnessClassByInstructor() {}
   // Get a User's Fitness Class History
   public async getUserClassHistory() {}
-  // Get an Instructor/Student/Admin User by ID/Name
+  // Get an Instructor/Student/Admin User by ID/Name/Email
   public async getUserById() {}
   // Create a new Location
   public async createLocation() {}

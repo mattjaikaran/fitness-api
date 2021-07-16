@@ -11,38 +11,51 @@ export default class StudentBookingController {
   }
 
   // Get Fitness class by ID
-  public async show({ params }) {}
+  public async getFitnessClassByID({ params }) {}
 
-  // Student books a class
-  public async studentBookClass(ctx: HttpContextContract) {
+  // Get Fitness Class by Availaibity/Status
+  public async getFitnessClassByStatus() {}
+
+  // Get Fitness Class by Instructor
+  public async getFitnessClassByInstructor() {}
+
+  // Get Fitness Class by Day
+  public async getFitnessClassByDay() {}
+
+  // Get Fitness Class by Type
+  public async getFitnessClassByType() {}
+
+
+  // Student books their spot in a Fitness Class
+  public async studentBookFitnessClass(ctx: HttpContextContract) {
     // Needs to have search by location, box, exercise, and instructor
-    // Choose a location
-    // Choose a box
+    // Choose a Location
+    // Choose a Box
     // Choose an available time slot if has less than the capacity.
       // Show an option for if less than N students, notify or something?
       // If class is at capacity, have an option to waitlist 
       // And get notified of how many others were notified from the waitlist
-    // class time/location/box time for hold - Admin to approve
     // Student pays for the class to book the time
-    // Admin aproves, class status will be moved from 'Pending' to 'Booked'
-    // Adds to calendar, shows capacity
+    // Adds to calendar, shows capacity, +1 to capacity 
     // Email notification of confirmation with calendar event with all the data needed.
       // If class data updates, can send an email notification with updated event details. 
   }
 
-  // Student cancels a class
+  // Student cancels their spot in a Fitness Class
   public async studentCancel(ctx: HttpContextContract) {
     // Student fills out form to cancel
     // Need a timeline to cancel class?
+    // -1 to Fitness Class capacity 
+    // Removed cancelled class from the Student’s Fitness Class History array.
     // Notify instructor of student cancellation
       // If canceled, students need to be given a credit. No refund.
       // Notify Waitlisted students of available spot in the class. 
   }
 
-  // Put a student on a waitlist for a class
+  // Put a student on a waitlist for a Fitness Class
   public async studentAddToWaitlist(ctx: HttpContextContract) {
     // Sign up for waitlist. Fill a form.
-    // Get an email notification 
+    // Get an email notification that theyre added to the waitlist
     // Have the ability to cancel a waitlist. 
     // Notify instructors of how many waitlisted.
   }

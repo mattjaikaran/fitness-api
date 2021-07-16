@@ -15,12 +15,15 @@ export default class FitnessClassesController {
   }
 
   // Get Fitness Class by ID
-  public async show({ params }) {
+  public async getFitnessClassById({ params }) {
     const fitnessClass = await FitnessClass.find(params.id)
     return fitnessClass
   }
 
-  // Book a box for a class
+  // Get Fitness Class by Status
+  public async getFitnessClassByStatus() {}
+
+  // Book a box for a Fitness Class
   public async instructorBookBox(ctx: HttpContextContract){
     // Choose a location
     // Choose a box
@@ -31,10 +34,14 @@ export default class FitnessClassesController {
     // Adds to calendar, shows capacity
   }
 
-  // Cancel a class - 
+  // Update Fitness Class Details
+  public async updateFitnessClass({ params }) {}
+
+  // Cancel a Fitness Class - 
   public async instructorCancelClass(ctx: HttpContextContract) {
     // Instructor fills out form to cancel
     // Need a timeline to cancel/hand off class to another instructor.
+    // Should there be a limit of classes a Student can waitlist?
     // Hand off to another instructor
     // Cancel if not enough people are confirmed for a class?
     // Notify students of class cancellation/Instructor change
