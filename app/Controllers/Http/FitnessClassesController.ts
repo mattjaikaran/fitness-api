@@ -4,6 +4,7 @@ import FitnessClass from 'App/Models/FitnessClass'
 // here is where instructor capabilities will go. 
 // CRUD for instructors booking a class, canceling a class
 // Auth
+// TODO: Make sure not to repeat Admin Functionality with other Users. 
 
 export default class FitnessClassesController {
 

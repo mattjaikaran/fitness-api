@@ -21,7 +21,7 @@ export default class FitnessClass extends BaseModel {
   public location: Location | string
 
   @column()
-  public box: Box | string
+  public boxes: Array<Box> | Array<string>
 
   @column()
   public classTime: DateTime | string
