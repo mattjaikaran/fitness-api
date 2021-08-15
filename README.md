@@ -3,9 +3,7 @@ NodeJS API built with AdonisJS 5
 
 ## Technologies
 - NodeJS
-- AdonisJS 5 Framework
 - TypeScript
-- Lucid ORM
 - PostGreSQL
 
 
