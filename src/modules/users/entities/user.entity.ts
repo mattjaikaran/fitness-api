@@ -1,3 +1,4 @@
+import { ApiHideProperty } from '@nestjs/swagger';
 import { classToPlain, Exclude } from 'class-transformer';
 import { RoleEntity } from 'src/entities/role.entity';
 import {
@@ -39,6 +40,7 @@ export class UserEntity {
   @Column({ unique: true, length: 20, nullable: true })
   public mobile: string;
 
+  @ApiHideProperty()
   @Exclude({ toPlainOnly: true })
   @Column({ length: 100 })
   public password: string;
@@ -61,11 +63,6 @@ export class UserEntity {
   @Column({ default: false })
   public isApproved: boolean;
 
-  @Column({ default: 0.0, type: 'decimal' })
-  public consumedSmsCost: number;
-
-  @Column({ default: 0.0, type: 'decimal' })
-  public consumedSubscriberCost: number;
 
   @CreateDateColumn()
   public createdAt: Date;

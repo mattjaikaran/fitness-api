@@ -1,17 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsEnum,
   IsIn,
   IsInt,
   IsNotEmpty,
   IsNotIn,
   IsOptional,
-  IsString,
   Length,
   MaxLength,
 } from 'class-validator';
-import { Match } from 'src/shared/match.decorator';
-
+import { ROLES } from '../../services/access-control/consts/roles.const';
+import { Match } from '../../shared/match.decorator';
 export enum gender {
   male = 'male',
   female = 'female',
@@ -51,7 +51,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-
   @ApiProperty()
   @Length(0, 300)
   @IsOptional()
@@ -77,7 +76,6 @@ export class CreateUserDto {
   @IsOptional()
   isActive: boolean;
 
-
   @ApiProperty()
   @IsNotEmpty()
   @Length(3, 100)
@@ -86,6 +84,11 @@ export class CreateUserDto {
   @ApiProperty()
   @IsOptional()
   urlId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(ROLES)
+  role: string;
 }
 
 export class UpdateProfilePasswordDto {

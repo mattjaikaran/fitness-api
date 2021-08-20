@@ -1,6 +1,6 @@
-import { FloorPlansEntity } from 'src/modules/floor-plans/entities/floor-plans.entity';
 import { LocationsEntity } from 'src/modules/locations/entities/locations.entity';
 import { FeaturesEntity } from 'src/modules/settings/entities/features.entity';
+import { FloorPlansEntity } from 'src/modules/settings/entities/floor-plans.entity';
 import { StylesEntity } from 'src/modules/settings/entities/styles.entity';
 import {
   Column,
@@ -11,13 +11,13 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { TABLES } from '../../../consts/tables.const';
 import { BoxFeaturesEntity } from './box-features.entity';
+import { BoxRatesEntity } from './box-rate.entity';
 
 @Entity({ name: TABLES.BOXES.name })
 export class BoxesEntity {
@@ -68,6 +68,7 @@ export class BoxesEntity {
 
   @ManyToMany(() => FeaturesEntity, (feature) => feature.boxes, {
     eager: true,
+    cascade:true
   })
   @JoinTable({
     name: TABLES.BOX_FEATURES.name,
@@ -75,6 +76,15 @@ export class BoxesEntity {
     inverseJoinColumn: { name: 'featureId', referencedColumnName: 'id' },
   })
   features: FeaturesEntity[];
+
+  @OneToMany(() => BoxRatesEntity, (d) => d.box, {
+    eager: true,
+    nullable: false,
+  })
+  rates: BoxRatesEntity[];
+
+  @Column({ default: false })
+  public heated: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

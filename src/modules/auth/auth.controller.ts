@@ -2,32 +2,20 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
   HttpException,
   HttpStatus,
-  Param,
   Post,
-  Query,
   Request,
   UnprocessableEntityException,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { ROLES } from 'src/services/access-control/consts/roles.const';
-import { logger } from 'src/services/logs/log.storage';
 import { error } from 'src/shared/error.dto';
-import { Auth } from '../../decorators/auth.decorator';
-import { LoginUser } from '../../decorators/user.decorator';
 import { AuthMailer } from '../../mails/users/auth.mailer';
 import { AppLogger } from '../../services/logs/log.service';
-import { UserEntity } from '../users/entities/user.entity';
 import { UsersService } from '../users/services/users.service';
-import {
-  CreateUserDto,
-  UpdateProfileDto,
-  UpdateProfilePasswordDto
-} from '../users/users.dto';
+import { CreateUserDto } from '../users/users.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -42,7 +30,6 @@ export class AuthController {
     this.logger.setContext('AuthController');
   }
 
-
   @ApiBody({ required: true })
   @Post('login')
   async login(@Request() req: any) {
@@ -54,7 +41,7 @@ export class AuthController {
       throw new HttpException(e, HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
-  
+
   // @Auth({})
   @Post('register')
   @UsePipes(ValidationPipe)
@@ -102,36 +89,6 @@ export class AuthController {
         data: newUser,
         accessToken: (await this.authService.login(newUser.user)).accessToken,
       };
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  @Auth({ })
-  @Post('updateProfile')
-  @UsePipes(ValidationPipe)
-  async updateProfile(
-    @Body() user: UpdateProfileDto,
-    @LoginUser() _user: UserEntity,
-  ) {
-    try {
-      const updateUser = await this.userService.updateUser(_user.id, user);
-      return { data: updateUser };
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  @Auth({ })
-  @Post('updatePassword')
-  @UsePipes(ValidationPipe)
-  async updatePassword(
-    @Body() data: UpdateProfilePasswordDto,
-    @LoginUser() _user: UserEntity,
-  ) {
-    try {
-      const updateUser = await this.userService.updatePassword(_user.id, data);
-      return { data: updateUser.message };
     } catch (error) {
       throw error;
     }

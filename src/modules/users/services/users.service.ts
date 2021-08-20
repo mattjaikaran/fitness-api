@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
 import { TABLES } from 'src/consts/tables.const';
+import { ROLES } from 'src/services/access-control/consts/roles.const';
 import { error } from 'src/shared/error.dto';
 import {
   columnListToSelect,
@@ -143,6 +144,9 @@ export class UsersService {
 
   async createUser(user: CreateUserDto) {
     try {
+      if (user.role === ROLES.ADMIN) {
+        throw new BadRequestException('Admin registration is forbidden.');
+      }
       if (this.isValidEmail(user.email.toLowerCase())) {
         let count = await this.repository.count({
           where: { email: user.email.toLowerCase() },
@@ -158,7 +162,9 @@ export class UsersService {
         if (count > 0) {
           throw new BadRequestException(UserNameAlreadyExistError);
         }
-        count = await this.repository.count({ where: { mobile: user.mobile } });
+        count = await this.repository.count({
+          where: { mobile: user.mobile },
+        });
         if (count > 0) {
           throw new BadRequestException(PhoneAlreadyExistError);
         }
@@ -167,9 +173,13 @@ export class UsersService {
         user.urlId = nanoid(10);
         user.username = user.username.toLowerCase();
         const newUser: UserEntity = await this.repository.save(user);
-        await this.updateRoles(newUser.id, { userId: newUser.id, roleId: [2] });
-        /* await this.createEmailToken(user.email);
-        await this.emailTokenSend.sendEmailVerification(user.email); */
+        const roles = await this.roleRepository.findOne({
+          where: { role: user.role },
+        });
+        await this.updateRoles(newUser.id, {
+          userId: newUser.id,
+          roleId: [roles.id],
+        });
 
         return { user: newUser };
       } else {
@@ -203,11 +213,16 @@ export class UsersService {
         updateData.meta = user.meta;
       }
 
-      updateData.gender = user.gender;
+      if (user.gender) {
+        updateData.gender = user.gender;
+      }
+      if (user.dob) {
+        updateData.dob = user.dob ? user.dob : null;
+      }
 
-      updateData.dob = user.dob ? user.dob : null;
-
-      updateData.statusMessage = user.statusMessage;
+      if (user.statusMessage) {
+        updateData.statusMessage = user.statusMessage;
+      }
 
       if (user.firstName) {
         updateData.firstName = user.firstName;

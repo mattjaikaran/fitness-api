@@ -1,4 +1,3 @@
-import { FeaturesEntity } from 'src/modules/settings/entities/features.entity';
 import {
   CreateDateColumn,
   DeleteDateColumn,
@@ -8,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { TABLES } from '../../../consts/tables.const';
+import { FeaturesEntity } from '../../../modules/settings/entities/features.entity';
 import { BoxesEntity } from './box.entity';
 
 @Entity({ name: TABLES.BOX_FEATURES.name })

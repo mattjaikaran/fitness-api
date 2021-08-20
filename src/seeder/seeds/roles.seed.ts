@@ -1,5 +1,5 @@
 import { Seeder } from '../../decorators/common.decorator';
-import { RolesService } from '../../services/roles.service';
+import { RolesService } from '../../modules/users/services/roles.service';
 import { ROLES } from '../../services/access-control/consts/roles.const';
 import { ISeed } from '../seeds.interface';
 

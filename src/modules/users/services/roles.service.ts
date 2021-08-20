@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { RoleRepository } from '../repos/roles.repo';
-import { isExist } from '../shared/repo.fun';
-import { RoleAlreadyExistError } from '../modules/users/errors/roles.error';
-import { RoleEntity } from 'src/entities/role.entity';
+import { RoleRepository } from '../../../repos/roles.repo';
+import { isExist } from '../../../shared/repo.fun';
+import { RoleAlreadyExistError } from '../errors/roles.error';
 
 @Injectable()
 export class RolesService {
@@ -34,8 +33,7 @@ export class RolesService {
     }
   }
 
-
-  findAll(): Promise<RoleEntity[]> {
-    return this.repository.find();
+  async findAll(): Promise<any> {
+    return this.repository.findAndCount();
   }
 }

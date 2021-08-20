@@ -1,9 +1,11 @@
+import { BoxRatesEntity } from 'src/modules/box/entities/box-rate.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,6 +27,11 @@ export class TimingsEntity {
   @OneToOne(() => DaysEntity, (days) => days.id)
   @JoinColumn()
   day: DaysEntity;
+
+  @OneToMany(() => BoxRatesEntity, (d) => d.box, {
+    nullable: false,
+  })
+  rates!: BoxRatesEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

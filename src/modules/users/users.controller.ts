@@ -3,10 +3,9 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Param,
   Post,
-  UnprocessableEntityException,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -17,20 +16,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
-import { error } from 'src/shared/error.dto';
 import { Auth } from '../../decorators/auth.decorator';
 import { LoginUser } from '../../decorators/user.decorator';
 import { ROLES } from '../../services/access-control/consts/roles.const';
 import { CompressJSON } from '../../services/common/compression/compression.interceptor';
-import { PasswordHashEngine } from '../../shared/hash.service';
 import { PaginatorError, PaginatorErrorHandler } from '../../shared/paginator';
 import { inValidDataRes } from '../../shared/res.fun';
 import { UserEntity } from './entities/user.entity';
-import { InValidDataError, UserNotExistError } from './errors/users.error';
+import { InValidDataError } from './errors/users.error';
 import { editFileName, imageFileFilter } from './imageupload.service';
-import { RolesService } from '../../services/roles.service';
+import { RolesService } from './services/roles.service';
 import { UsersService } from './services/users.service';
-import { PasswordChange, UpdateProfileDto, UpdateRole } from './users.dto';
+import { UpdateProfileDto, UpdateRole } from './users.dto';
 
 // const idToPath = (x, data) => {
 //   return `APP/${data.orgId}/${TABLES.USERS.id}/${data.id}/${path}`;
@@ -55,12 +52,19 @@ export class UsersController {
   async getUserProfile(@LoginUser() user: UserEntity): Promise<UserEntity> {
     return this.userService.findOne({
       where: { id: user.id },
-      relations: ['paymentMethod'],
     });
   }
 
   @Auth({ roles: [ROLES.ADMIN] })
-  @Get(':id')
+  @Get('/roles')
+  async getRoles(@LoginUser() user: any) {
+    console.log(user);
+    const res = this.rolesService.findAll();
+    return res;
+  }
+
+  @Auth({ roles: [ROLES.ADMIN] })
+  @Get('/:id')
   async getUser(@Param('id') id: number) {
     try {
       const user = await this.userService.findOne({ where: { id: id } });
@@ -71,23 +75,6 @@ export class UsersController {
       }
       throw error;
     }
-  }
-
-  @Auth({ roles: [ROLES.ADMIN] })
-  @Post('roles')
-  getRoles() {
-    const res = this.rolesService.findAll();
-    return res;
-  }
-
-  @Auth({ roles: [ROLES.ADMIN] })
-  @Get(':id/roleId')
-  getRolesId(@Param('id') id: string) {
-    return this.userService.findOne({
-      where: { id: id },
-      relations: ['roles'],
-    });
-    //return this.rolesService.repository.find();
   }
 
   @Auth({ roles: [ROLES.ADMIN] })
@@ -110,7 +97,7 @@ export class UsersController {
   }
 
   @Auth({ roles: [ROLES.ADMIN] })
-  @Post(':id/updateRole')
+  @Put(':id/update-role')
   @UsePipes(ValidationPipe)
   async updateRole(@Body() user: UpdateRole, @Param('id') id: string) {
     try {
@@ -124,9 +111,8 @@ export class UsersController {
     }
   }
 
-
-  @Auth({ })
-  @Post('upProfileImage')
+  @Auth({})
+  @Post('profile-image')
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -144,25 +130,16 @@ export class UsersController {
     return this.userService.setProfileImage(user, image);
   }
 
-  @Get(':username')
+  @Get('/un/:username')
   async getUserByUsername(@Param('username') username: string) {
     try {
       const _u = await this.userService.findOne({
         where: { username: username },
-        relations: ['numbers'],
       });
       if (_u) {
-        const user = {
-          username: _u.username,
-          dob: _u.dob,
-          link: _u.links,
-          image: _u.image,
-          status: _u.statusMessage,
-          numbers: _u.numbers,
-        };
-        return { user };
+        return { user: _u };
       }
-      throw new BadRequestException('Influencer not found in our system');
+      throw new BadRequestException('User not found in our system');
     } catch (e) {
       throw e;
     }

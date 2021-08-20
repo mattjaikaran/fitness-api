@@ -7,16 +7,15 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { BoxModule } from './modules/box/box.module';
+import { LocationsModule } from './modules/locations/locations.module';
+import { SettingsModule } from './modules/settings/settings.module';
 import { UsersModule } from './modules/users/users.module';
 import { SeederController } from './seeder/seeder.controller';
 import { SeederProviders } from './seeder/seeder.module';
 import { MailModule } from './services/mail/mail.module';
 import { ServicesModule } from './services/services.module';
 import { MainMysqlModule } from './shared/main-mysql.module';
-import { LocationsModule } from './modules/locations/locations.module';
-import { FloorPlansModule } from './modules/floor-plans/floor-plans.module';
-import { BoxModule } from './modules/box/box.module';
-import { SettingsModule } from './modules/settings/settings.module';
 
 @Module({
   imports: [
@@ -40,7 +39,6 @@ import { SettingsModule } from './modules/settings/settings.module';
     MainMysqlModule,
     ServicesModule,
     LocationsModule,
-    FloorPlansModule,
     BoxModule,
     SettingsModule,
   ],
