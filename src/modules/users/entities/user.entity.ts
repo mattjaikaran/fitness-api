@@ -1,6 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { classToPlain, Exclude } from 'class-transformer';
 import { RoleEntity } from 'src/entities/role.entity';
+import { InstructorExpertiseEntity } from '../../instructor/entities/instructor-expertise.entity';
 import {
   Column,
   CreateDateColumn,
@@ -63,7 +64,6 @@ export class UserEntity {
   @Column({ default: false })
   public isApproved: boolean;
 
-
   @CreateDateColumn()
   public createdAt: Date;
 
@@ -72,6 +72,9 @@ export class UserEntity {
 
   @OneToMany(() => UserToRoleEntity, (roles) => roles.user)
   public userToRole!: UserToRoleEntity[];
+
+  @OneToMany(() => InstructorExpertiseEntity, (ie) => ie.user, { eager: false })
+  public expertise: InstructorExpertiseEntity[];
 
   @ManyToMany(() => RoleEntity, (roles) => roles.users, { eager: true })
   @JoinTable({

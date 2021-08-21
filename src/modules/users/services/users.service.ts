@@ -7,21 +7,15 @@ import {
 import * as fs from 'fs';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
-import { TABLES } from 'src/consts/tables.const';
 import { ROLES } from 'src/services/access-control/consts/roles.const';
 import { error } from 'src/shared/error.dto';
-import {
-  columnListToSelect,
-  dataViewer,
-  mapColumns,
-  paginateQuery,
-  PaginatorError,
-  PaginatorErrorHandler,
-} from 'src/shared/paginator';
-import { Not } from 'typeorm';
+import { PaginationDto } from 'src/shared/pagination.dto';
+import { PaginatorError, PaginatorErrorHandler } from 'src/shared/paginator';
+import { getRepository, Not } from 'typeorm';
 import { RoleRepository } from '../../../repos/roles.repo';
 import { PasswordHashEngine } from '../../../shared/hash.service';
 import { isExist } from '../../../shared/repo.fun';
+import { UserToRoleEntity } from '../entities/user-to-role.entity';
 import { UserEntity } from '../entities/user.entity';
 import {
   EmailAlreadyExistError,
@@ -77,55 +71,43 @@ export class UsersService {
     return isExist(this.repository, 'mobile', val);
   }
 
-  async getAllUsers(data: any) {
+  async getAllUsers(data: PaginationDto) {
     try {
-      const userTable = TABLES.USERS.name;
-      const columnList: any = {
-        id: { table: userTable, column: 'id' },
-        firstName: { table: userTable, column: 'firstName' },
-        lastName: { table: userTable, column: 'lastName' },
-        username: { table: userTable, column: 'username' },
-        email: { table: userTable, column: 'email' },
-        createdAt: { table: userTable, column: 'createdAt' },
-        gender: { table: userTable, column: 'gender' },
-        mobile: { table: userTable, column: 'mobile' },
-        //password: { table: userTable, column: 'password' },
-        image: { table: userTable, column: 'image' },
-        isActive: {
-          table: userTable,
-          column: 'isActive',
-          valueMapper: (v: any) => (v ? 'YES' : 'NO'),
-        },
-      };
-      const sortList = {
-        firstName: { table: userTable, column: 'firstName' },
-      };
-      const filterList = {
-        firstName: { table: userTable, column: 'firstName' },
-        isActive: {
-          table: userTable,
-          column: 'isActive',
-          valueMapper: (v: any) => Number(v === 'YES'),
-        },
-      };
-      const { filters, configs } = dataViewer({
-        data,
-        filterList,
-        sortList,
-        columnList,
+      const { page, limit } = data;
+      const [users, count] = await this.repository.findAndCount({
+        skip: (page - 1) * limit,
+        take: limit,
+        order: { createdAt: 'DESC', name: 'ASC' },
       });
-      const query = await this.repository
-        .createQueryBuilder(TABLES.USERS.name)
-        .select(columnListToSelect(columnList))
-        .where(filters.sql);
-
-      const paginatedData = await paginateQuery(query, configs, userTable);
-      if (paginatedData.data.length) {
-        paginatedData.data = paginatedData.data.map(
-          mapColumns(paginatedData.data[0], columnList),
-        );
+      return { users, count };
+    } catch (error) {
+      if (error instanceof PaginatorError) {
+        throw PaginatorErrorHandler(error);
       }
-      return { data: paginatedData.data, meta: paginatedData.meta };
+      throw error;
+    }
+  }
+
+  async getUsersByRole(role: string, data: PaginationDto) {
+    try {
+      const { page, limit } = data;
+      const _role = await this.roleRepository.findOne({
+        where: {
+          role: role,
+        },
+      });
+      const [check,count] = await getRepository(UserToRoleEntity).findAndCount({
+        where: { roleId: _role.id },
+        relations: ['user'],
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      let users = [];
+      check.forEach((role) => {
+        users.push(role.user);
+      });
+      return { users, count };
     } catch (error) {
       if (error instanceof PaginatorError) {
         throw PaginatorErrorHandler(error);

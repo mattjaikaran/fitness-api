@@ -11,6 +11,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/decorators/auth.decorator';
+import { ROLES } from 'src/services/access-control/consts/roles.const';
 import { error } from 'src/shared/error.dto';
 import { AuthMailer } from '../../mails/users/auth.mailer';
 import { AppLogger } from '../../services/logs/log.service';
@@ -88,6 +90,40 @@ export class AuthController {
       return {
         data: newUser,
         accessToken: (await this.authService.login(newUser.user)).accessToken,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Auth({ roles: [ROLES.ADMIN] })
+  @Post('add-new-user')
+  @UsePipes(ValidationPipe)
+  async registerUser(@Body() user: CreateUserDto) {
+    try {
+      if (user.username.includes(' ')) {
+        throw new UnprocessableEntityException(
+          error(
+            [
+              {
+                key: 'username',
+                reason: 'invalidData',
+                description: 'Username contains space character',
+              },
+            ],
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            'Unprocessable entity',
+          ),
+        );
+      }
+      user.mobile = user.mobile
+        .replace(' ', '')
+        .replace('(', '')
+        .replace(')', '')
+        .replace('-', '');
+      const newUser = await this.userService.createUser(user);
+      return {
+        data: newUser,
       };
     } catch (error) {
       throw error;

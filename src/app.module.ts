@@ -16,6 +16,8 @@ import { SeederProviders } from './seeder/seeder.module';
 import { MailModule } from './services/mail/mail.module';
 import { ServicesModule } from './services/services.module';
 import { MainMysqlModule } from './shared/main-mysql.module';
+import { ImagesModule } from './modules/images/images.module';
+import { InstructorModule } from './modules/instructor/instructor.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { MainMysqlModule } from './shared/main-mysql.module';
     LocationsModule,
     BoxModule,
     SettingsModule,
+    ImagesModule,
+    InstructorModule,
   ],
   controllers: [AppController, SeederController],
   providers: [...SeederProviders, AppService],

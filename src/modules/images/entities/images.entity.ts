@@ -3,28 +3,27 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { TABLES } from '../../../consts/tables.const';
-import { TimingsEntity } from './timings.entity';
 
-@Entity({ name: TABLES.DAYS.name })
-export class DaysEntity {
+@Entity({ name: TABLES.IMAGES.name })
+export class ImagesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 100 })
-  name: string;
+  modelName: string;
 
-  @ManyToOne(() => TimingsEntity, (t) => t.rates, {
-    cascade: true,
-  })
-  timings: TimingsEntity;
-  @RelationId('timings')
-  timingId: number;
+  @Column({ unsigned: true })
+  modelId: number;
+
+  @Column({ unsigned: true })
+  userId: number;
+
+  @Column({ type: 'text' })
+  filePath: string;
 
   @CreateDateColumn()
   createdAt: Date;

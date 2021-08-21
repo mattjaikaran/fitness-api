@@ -1,18 +1,14 @@
 import { BoxesEntity } from 'src/modules/box/entities/box.entity';
-import { UserToRoleEntity } from 'src/modules/users/entities/user-to-role.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { TABLES } from '../../../consts/tables.const';
-
 
 @Entity({ name: TABLES.STYLES.name })
 export class StylesEntity {

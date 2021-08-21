@@ -14,6 +14,7 @@ export class LocationsService {
       const [locations, count] = await this.repository.findAndCount({
         skip: (page - 1) * limit,
         take: limit,
+        order: { createdAt: 'DESC', name: 'ASC' },
       });
       return { locations, count };
     } catch (e) {
@@ -36,6 +37,7 @@ export class LocationsService {
         where: { name: ILike(`%${name}%`) },
         skip: (page - 1) * limit,
         take: limit,
+        order: { createdAt: 'DESC', name: 'ASC', },
       });
       return { locations, count };
     } catch (e) {

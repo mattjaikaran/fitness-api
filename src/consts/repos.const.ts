@@ -1,3 +1,5 @@
+import { ExpertiseRepository } from 'src/modules/settings/repositories/expertise.repository';
+import { BoxRatesRepository } from '../modules/box/repositories/box-rates.repository';
 import { BoxesRepository } from '../modules/box/repositories/box.repository';
 import { LocationsRepository } from '../modules/locations/repositories/location.repository';
 import { DaysRepository } from '../modules/settings/repositories/days.repository';
@@ -20,4 +22,6 @@ export const REPOS = [
   StylesRepository,
   TimingsRepository,
   BoxesRepository,
+  BoxRatesRepository,
+  ExpertiseRepository,
 ];

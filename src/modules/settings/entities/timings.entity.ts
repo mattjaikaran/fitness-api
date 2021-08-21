@@ -4,9 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,9 +22,10 @@ export class TimingsEntity {
   @Column({ type: 'time' })
   endTime: string;
 
-  @OneToOne(() => DaysEntity, (days) => days.id)
-  @JoinColumn()
-  day: DaysEntity;
+  @OneToMany(() => DaysEntity, (days) => days.timings, {
+    nullable: false,
+  })
+  day!: DaysEntity[];
 
   @OneToMany(() => BoxRatesEntity, (d) => d.box, {
     nullable: false,

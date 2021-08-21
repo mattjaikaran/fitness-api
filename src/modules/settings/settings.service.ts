@@ -1,15 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DaysDto } from './dtos/days.dto';
+import { ExpertiseDto } from './dtos/expertise.dto';
 import { FeaturesDto } from './dtos/features.dto';
 import { FloorPlansDto } from './dtos/floor-plans.dto';
 import { StylesDto } from './dtos/styles.dto';
 import { TimingsDto } from './dtos/timings.dto';
 import { DaysEntity } from './entities/days.entity';
+import { ExpertiseEntity } from './entities/expertis.entity';
 import { FeaturesEntity } from './entities/features.entity';
 import { FloorPlansEntity } from './entities/floor-plans.entity';
 import { StylesEntity } from './entities/styles.entity';
 import { TimingsEntity } from './entities/timings.entity';
 import { DaysRepository } from './repositories/days.repository';
+import { ExpertiseRepository } from './repositories/expertise.repository';
 import { FeaturesRepository } from './repositories/features.repository';
 import { FloorPlansRepository } from './repositories/floor-plans.repository';
 import { StylesRepository } from './repositories/styles.repository';
@@ -23,6 +26,7 @@ export class SettingsService {
     private readonly floorPlans: FloorPlansRepository,
     private readonly styles: StylesRepository,
     private readonly timings: TimingsRepository,
+    private readonly expertise: ExpertiseRepository,
   ) {}
 
   //#region Days
@@ -36,6 +40,45 @@ export class SettingsService {
       day.name = data.name;
       day = await this.days.save(day);
       return { day, message: 'Saved successfully.' };
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.EXPECTATION_FAILED);
+    }
+  }
+
+  //#endregion
+
+  //#region Expertise
+  async getAllExpertise() {
+    return this.expertise.find();
+  }
+
+  async addExpertise(data: ExpertiseDto) {
+    try {
+      let expertise = new ExpertiseEntity();
+      expertise.name = data.name;
+      expertise = await this.expertise.save(expertise);
+      return { expertise, message: 'Saved successfully.' };
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.EXPECTATION_FAILED);
+    }
+  }
+
+  async updateExpertise(id: number, data: ExpertiseDto) {
+    try {
+      let expertise = new ExpertiseEntity();
+      expertise.id = id;
+      if (data.name) expertise.name = data.name;
+      expertise = await this.expertise.save(expertise);
+      return { expertise, message: 'Saved successfully.' };
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.EXPECTATION_FAILED);
+    }
+  }
+
+  async deleteExpertise(id: number) {
+    try {
+      const expertise = await this.expertise.delete(id);
+      return { expertise, message: 'Deleted successfully.' };
     } catch (e) {
       throw new HttpException(e, HttpStatus.EXPECTATION_FAILED);
     }

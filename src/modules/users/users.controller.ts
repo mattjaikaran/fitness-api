@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -16,10 +17,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import { PaginationDto } from 'src/shared/pagination.dto';
 import { Auth } from '../../decorators/auth.decorator';
 import { LoginUser } from '../../decorators/user.decorator';
 import { ROLES } from '../../services/access-control/consts/roles.const';
-import { CompressJSON } from '../../services/common/compression/compression.interceptor';
 import { PaginatorError, PaginatorErrorHandler } from '../../shared/paginator';
 import { inValidDataRes } from '../../shared/res.fun';
 import { UserEntity } from './entities/user.entity';
@@ -41,10 +42,18 @@ export class UsersController {
   ) {}
 
   @Auth({ roles: [ROLES.ADMIN] })
-  @Get('')
-  @CompressJSON()
-  async getAllUsers(@Body('jData') data: any) {
+  @Get()
+  async getAllUsers(@Query() data: PaginationDto) {
     return this.userService.getAllUsers(data);
+  }
+
+  @Auth({ roles: [ROLES.ADMIN] })
+  @Get('search/:role')
+  async getUsersByRole(
+    @Param('role') role: string,
+    @Query() data: PaginationDto,
+  ) {
+    return this.userService.getUsersByRole(role, data);
   }
 
   @Get('me')
@@ -56,15 +65,14 @@ export class UsersController {
   }
 
   @Auth({ roles: [ROLES.ADMIN] })
-  @Get('/roles')
+  @Get('roles')
   async getRoles(@LoginUser() user: any) {
-    console.log(user);
     const res = this.rolesService.findAll();
     return res;
   }
 
   @Auth({ roles: [ROLES.ADMIN] })
-  @Get('/:id')
+  @Get(':id')
   async getUser(@Param('id') id: number) {
     try {
       const user = await this.userService.findOne({ where: { id: id } });
@@ -78,8 +86,7 @@ export class UsersController {
   }
 
   @Auth({ roles: [ROLES.ADMIN] })
-  @Post(':id/update')
-  @UsePipes(ValidationPipe)
+  @Put(':id/update')
   async updateUser(@Body() user: UpdateProfileDto, @Param('id') id: string) {
     try {
       if (user.username == 'admin') {

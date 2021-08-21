@@ -10,6 +10,7 @@ import {
   Length,
   MaxLength,
 } from 'class-validator';
+import { PaginationDto } from 'src/shared/pagination.dto';
 import { ROLES } from '../../services/access-control/consts/roles.const';
 import { Match } from '../../shared/match.decorator';
 export enum gender {
@@ -89,6 +90,37 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEnum(ROLES)
   role: string;
+}
+
+export class UserSearchDto {
+  @ApiProperty()
+  @IsOptional()
+  @IsEnum(ROLES)
+  role?: string;
+
+  @Length(3, 20)
+  @IsOptional()
+  firstName?: string;
+
+  @Length(3, 20)
+  @IsOptional()
+  lastName?: string;
+
+  @Length(3, 20)
+  @IsOptional()
+  username?: string;
+
+  @IsEmail()
+  @MaxLength(100)
+  @IsOptional()
+  email?: string;
+
+  @Length(3, 20)
+  @IsOptional()
+  mobile?: string;
+
+  @ApiProperty()
+  pagination: PaginationDto;
 }
 
 export class UpdateProfilePasswordDto {

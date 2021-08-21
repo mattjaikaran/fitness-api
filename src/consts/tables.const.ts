@@ -6,7 +6,7 @@ class TableData {
 const TablesList: any = {
   USERS: new TableData(),
   ROLES: new TableData(),
-  FILES: new TableData(),
+  IMAGES: new TableData(),
   USER_ROLES: new TableData(),
   ROLE_HAS_PERMISSIONS: new TableData(),
   PERMISSIONS: new TableData(),
@@ -24,7 +24,7 @@ const TablesList: any = {
   BOX_RATES: new TableData(),
   EXPERTISE: new TableData(),
   INSTRUCTOR_EXPERTISE: new TableData(),
-  INSTRUCTORS: new TableData(),
+  INSTRUCTOR_DETAILS: new TableData(),
   BOOKINGS: new TableData(),
 };
 
