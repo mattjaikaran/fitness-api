@@ -5,11 +5,12 @@ on:
     branches:
       - master
       - dev
-env:
-  SUPER_SECRET: ${{ secrets.CR_PAT }}
+
 jobs:
   push-docker-image:
     runs-on: ubuntu-latest
+    env:
+      SUPER_SECRET: ${{ secrets.CR_PAT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,7 +29,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: echo $SUPER_SECRET
+          password: $SUPER_SECRET
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
